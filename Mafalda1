@@ -1,0 +1,148 @@
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+
+// Superclass for all user roles
+class User {
+    private String username;
+    private String password;
+    private String role;
+
+    public User(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public boolean authentification(String username, String password) {
+        return this.username.equals(username) && this.password.equals(password);
+    }
+
+    // Getters and setters (if needed)
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+}
+
+class Administrator extends User {
+    private static Administrator[] users = {};
+
+    public Administrator(String username, String password, String role) {
+        super(username, password, role);
+    }
+}
+
+class Voter extends User {
+    private static Voter[] users = {};
+
+    public Voter(String username, String password, String role) {
+        super(username, password, role);
+    }
+}
+
+class Singer extends User {
+    private List<Song> songs;
+    private static Singer[] users = {};
+
+    public Singer(String username, String password, String role) {
+        super(username, password, role);
+        this.songs = new ArrayList<Song>();
+    }
+
+    public void addSong(Song song) {
+        songs.add(song);
+    }
+
+    public List<Song> getSongs() {
+        return songs;
+    }
+}
+
+
+class Song extends Singer {
+    private String title;
+    private int votes;
+
+    public Song(String title, int votes) {
+        super("", "", "");
+        this.title = title;
+        this.votes = votes;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public int getVotes() {
+    return votes;
+  }
+
+  public void setVotes(int votes) {
+    this.votes = votes;
+  }
+  }
+public class SongContestSystem {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String role;
+
+        // Create multiple User objects
+        User user1 = new User("john_doe", "password123", "Administrator");
+        User user2 = new User("alice_smith", "qwerty", "Administrator");
+
+        // Array of users
+        User[] users = {user1, user2};
+
+        System.out.println("Welcome to the song contest system! When creating a username and password please remember that your password can only consist of integers and your username can only consist of letters. Your username will come first, and then your password. Please note this only applies to administrators");
+
+        // Clear the input buffer before reading user input
+        sc.nextLine();
+
+        System.out.println("Please enter your username");
+        String inputUsername = sc.nextLine();
+        System.out.println("Please enter your password");
+        String inputPassword = sc.nextLine();
+        System.out.println("Please state if you are an Administrator, Voter, or Singer");
+        role = sc.nextLine();
+
+        // Check if input username and password match with any user
+        boolean isAuthenticated = false;
+        for (User user : users) {
+            if (user.authentification(inputUsername, inputPassword)) {
+                isAuthenticated = true;
+                System.out.println("Login successful for user: " + inputUsername);
+                break;
+            }
+        }
+
+        if (!isAuthenticated) {
+            System.out.println("Invalid username or password");
+        }
+
+        sc.close();
+    }
+}
